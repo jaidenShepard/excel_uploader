@@ -1,0 +1,8 @@
+version: '3'
+services:
+    excel-uploader:
+        build: .
+        ports:
+            - "8000:8000"
+        volumes:
+            - ./storage:/usr/src/app/storage
