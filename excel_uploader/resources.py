@@ -1,15 +1,16 @@
-from fastapi import APIRouter, Query, UploadFile, File
-from typing import List, Optional
-from .schemas import ExcelFileSchema, MessageSchema
-from fastapi import Depends
-from .repositories import FileRepository
-from .database import SessionLocal
-from sqlalchemy.orm import Session
-from uuid import UUID
-from starlette.responses import FileResponse, JSONResponse
-from sqlalchemy.orm.exc import NoResultFound
 from tempfile import SpooledTemporaryFile
+from typing import List, Optional
+from uuid import UUID
+
+from fastapi import APIRouter, Query, UploadFile, File, Depends
+from starlette.responses import FileResponse, JSONResponse
+from sqlalchemy.orm import Session
+from sqlalchemy.orm.exc import NoResultFound
+
+from .database import SessionLocal
 from .exceptions import *
+from .schemas import ExcelFileSchema, MessageSchema
+from .repositories import FileRepository
 
 router = APIRouter()
 repository = FileRepository()
@@ -47,7 +48,7 @@ def get_files(
         200: {"content": {EXCEL_FILE_MEDIA_TYPE: {}}},
     },
 )
-async def get_file(file_uuid: UUID, db: Session = Depends(get_db)):
+async def get_file_for_download(file_uuid: UUID, db: Session = Depends(get_db)):
     """
     Retrieves a file for download
     """

@@ -1,7 +1,9 @@
-from .database import Base
-from sqlalchemy import Column, String
 from uuid import UUID
+
+from sqlalchemy import Column, String
 import sqlalchemy.types as types
+
+from .database import Base
 
 
 class UUIDType(types.TypeDecorator):
