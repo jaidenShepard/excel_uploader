@@ -1,5 +1,6 @@
 .mypy_cache/
 __pycache__/
 .pytest_cache
-files.db
 .vscode
+/storage/*
+.DS_Store

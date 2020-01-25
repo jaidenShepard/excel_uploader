@@ -1,8 +1,11 @@
 from sqlalchemy.orm import Session
 from .models import ExcelFile
-from uuid import UUID
+from uuid import UUID, uuid4
 import os
 from sqlalchemy.orm.exc import NoResultFound
+from fastapi import UploadFile
+import openpyxl
+
 
 class FileRepository:
     model = ExcelFile
@@ -21,3 +24,11 @@ class FileRepository:
         file_record = db.query(self.model).filter(self.model.id==id).one()
         file_path = f"{self.PATH_TO_FILE_STORAGE}{file_record.id}.xlsx"
         return file_record, file_path
+
+    def store_file(self, db: Session, file: UploadFile):
+        file_record = self.model(id=uuid4(), name=file.filename)
+        xl = openpyxl.load_workbook(file.file._file) # type: ignore
+        xl.save(f"{self.PATH_TO_FILE_STORAGE}{file_record.id}.xlsx")
+        db.add(file_record)
+        db.commit()
+        return file_record
