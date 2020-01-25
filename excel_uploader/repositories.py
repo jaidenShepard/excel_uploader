@@ -73,6 +73,10 @@ class FileRepository:
         try:
             xl = openpyxl.load_workbook(upload.file._file)  # type: ignore
             xl.save(f"{self.PATH_TO_FILE_STORAGE}{file_record.id}.xlsx")
+        except IndexError:
+            # openpyxl complains if there isn't a visible sheet, even if the
+            # file saved successfully
+            pass
         except:
             raise InvalidFileException(
                 "Invalid file. This file appears to not be a valid .xlsx"
