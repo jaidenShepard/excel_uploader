@@ -66,9 +66,11 @@ async def get_file_for_download(file_uuid: UUID, db: Session = Depends(get_db)):
 
 @router.post(
     "/files",
+    status_code=201,
+    response_model=ExcelFileSchema,
     responses={
         400: {"model": MessageSchema, "description": "Invalid Upload"},
-        200: {"model": ExcelFileSchema},
+        201: {"model": ExcelFileSchema},
     },
 )
 async def upload_file(
