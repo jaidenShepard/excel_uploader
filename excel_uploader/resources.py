@@ -76,6 +76,7 @@ async def get_file_for_download(file_uuid: UUID, db: Session = Depends(get_db)):
 async def upload_file(
     upload: UploadFile = File(default=None), db: Session = Depends(get_db)
 ):
+    """Upload a excel file"""
     try:
         return await repository.store_file(db, upload)
     except (FileTooLargeException, InvalidFileException, InvalidFileTypeException) as e:
